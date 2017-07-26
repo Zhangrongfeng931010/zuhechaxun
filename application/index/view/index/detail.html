@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>贫困学生档案档案</title>
+	</head>
+	<style>
+		.tablelist{
+			text-align:center;
+			border:1px solid black;
+			width:90%;
+			background:#dfdca5;
+			margin:0 auto;
+			font-size:18px;
+		}
+		.tablelist th{
+			text-align:center;
+			color:#004ea2;
+			height:35px;
+			width:10%;
+		}
+		.tablelist td{
+			text-align:center;
+			height:35px;
+			width:10%;
+		}
+	</style>
+	<body>
+		<table class="tablelist" border="1" cellspacing="0">
+		<caption style="font-size: 22px;">贫困学生信息</caption>
+		<br />
+		<tr>
+			<th colspan=2>填报学校</th>
+			<td>{$info['tbxx']?$info['tbxx']:""}</td>
+			<th colspan=2>填报人</th>
+			<td>{$info['tbr']?$info['tbr']:""}</td>
+			<th>填报时间</th>
+			<td>{$info['tbsj']?$info['tbsj']:""}</td>
+		</tr>
+		
+		<tr>
+			<th colspan=2 rowspan=3><img src="/public/{$info['path']?$info['path']:""}" width="100%"></th>
+			<th>姓名</th>
+			<td>{$info['title']?$info['title']:""}</td>
+			<th>性别</th>
+			<td>{$info['sex']==1 ? '男' : '女'}</td>
+			<th>出生年月</th>
+			<td>{$info['xsbirth']?$info['xsbirth']:""}</td>
+		</tr>
+		
+		<tr>
+			<th colspan=2>是否低保户</th>
+			<td>{$info['is_dibao']==1 ? '是' : '否'}</td>
+			<th colspan=2>是否建卡贫困户</th>
+			<td>{$info['is_jkpk']==1 ? '是' : '否'}</td>		
+		</tr>
+		
+		<tr>
+			<th colspan=2>家庭住址</th>
+			<td colspan=4>{$info['adress']?$info['adress']:""}</td>
+		</tr>
+		
+		<tr>
+			<th colspan=2>家庭联系人姓名</th>
+			<td>{$info['jtlxr']?$info['jtlxr']:""}</td>
+			<th colspan=2>与贫困生关系</th>
+			<td>{$info['gx']?$info['gx']:""}</td>
+			<th>联系电话</th>
+			<td>{$info['lxdh']?$info['lxdh']:""}</td>
+		</tr>
+		
+		<tr>
+			<th colspan=2>所在班级</th>
+			<td>{$info['szbj']?$info['szbj']:""}</td>
+			<th colspan=2>班主任姓名</th>
+			<td>{$info['bzr']?$info['bzr']:""}</td>
+			<th>联系电话</th>
+			<td>{$info['bzrdh']?$info['bzrdh']:""}</td>
+		</tr>
+		
+		<tr>
+			<th colspan=2>备注</th>
+			<td colspan=6>
+				{switch name="info['bz']" }
+				    {case value="0"}同意公开影像资料{/case}
+				    {case value="1"}不公开影像资料{/case}
+				    {default /}可公开模糊面部的影像资料
+				{/switch}
+			</td>			
+		</tr>
+		
+		<tr>
+			<th colspan=2>学生成绩</th>
+			<td>
+				{switch name="info['xscj']" }
+				    {case value="0"}优良{/case}
+				    {case value="1"}一般{/case}
+				    {default /}较差
+				{/switch}
+			</td>	
+			<th colspan=2>兴趣爱好</th>
+			<td colspan=3>{$info['fond']?$info['fond']:""}</td>
+		</tr>
+		
+		<tr>
+			<th colspan=2 rowspan="3">家庭经济情况</th>
+			<th colspan=2>家庭主要收入来源</th>
+			<td colspan=4>{$info['srly']?$info['srly']:""}</td>
+		</tr>
+		
+		<tr>			
+			<th colspan=2>家庭大致年人均收入</th>
+			<td colspan=4>{$info['rjsr']?$info['rjsr']:""}</td>
+		</tr>
+		
+		<tr>			
+			<th colspan=2>家庭贫困主要原因</th>
+			<td colspan=4>{$info['pkyy']?$info['pkyy']:""}</td>
+		</tr>
+		
+		<tr>			
+			<th colspan=2>建议帮扶内容</th>
+			<td colspan=6>{$info['bfnr']?$info['bfnr']:""}</td>
+		</tr>
+		<tr>			
+			<th colspan=8>家庭成员信息</th>
+		</tr>
+		<tr>			
+			<th colspan=2>姓名</th>
+			<th colspan=2>与贫困生关系</th>
+			<th>职业</th>
+			<th>身体状况</th>
+			<th colspan=2>其他</th>
+		</tr>
+		
+		<!--家庭成员信息-->
+		{volist name="family" id="vol"}
+		<tr>			
+			<td colspan=2>{$vol['title']}</td>
+			<td colspan=2>{$vol['relation']}</td>
+			<td>{$vol['zhiye']}</td>
+			<td>{$vol['heath']}</td>
+			<td colspan=2>{$vol['other']}</td>
+		</tr>
+		{/volist}
+		
+	</table>
+	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	</body>
+</html>

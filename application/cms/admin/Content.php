@@ -74,6 +74,7 @@ class Content extends Admin
                             ['id', 'ID'],                            
                             ['title', '乡镇名称', 'link', url('cms/document/detail', ['id'=>'__id__','model' => $model['id']])],                                                      
                             ['create_time', '创建时间','datetime'],
+                            ['sort', '顺序','text.edit'],  
                             ['right_button', '操作', 'btn']
                             ])
                             ->setTableName($table_name)
@@ -145,7 +146,7 @@ class Content extends Admin
                             ['title', '学历名称', 'link', url('cms/document/detail', ['id'=>'__id__','model' => $model['id']])],
                             ['create_time', '创建时间','datetime'],
                             //['update_time', '更新时间','datetime'],                            
-                            //['status', '是否显示','switch'],
+                            ['sort', '顺序','text.edit'],
                             ['right_button', '操作', 'btn']
                             ])
                             ->setTableName($table_name)

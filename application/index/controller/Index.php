@@ -10,7 +10,11 @@
 // +----------------------------------------------------------------------
 
 namespace app\index\controller;
-
+use think\Cache;
+use think\helper\Hash;
+use think\Db;
+use app\common\builder\ZBuilder;
+use app\user\model\User as UserModel;
 /**
  * 前台首页控制器
  * @package app\index\controller
@@ -19,10 +23,84 @@ class Index extends Home
 {
     public function index()
     {
-        // 默认跳转模块
-        if (config('home_default_module') != 'index') {
-            $this->redirect(config('home_default_module'). '/index/index');
-        }
-        return '<style type="text/css">*{ padding: 0; margin: 0; } .think_default_text{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family: "Century Gothic","Microsoft yahei"; color: #333;font-size:18px} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 42px }</style><div style="padding: 24px 48px;"> <h1>:)</h1><p> DolphinPHP V1.0.0<br/><span style="font-size:30px">极速 · 极简 · 极致</span></p></div>';
+    	if($this->request->isPost()){
+    		$data = $this->request->post();    		
+    		
+    		if(!isset($data['sex']) or $data['sex']=='' or $data['sex']==null ){
+    			unset($data['sex']);    			
+    		}
+    		if($data['xl']=='0'){
+    			unset($data['xl']);
+    		}
+    		if($data['town']=='0'){
+    			unset($data['town']);
+    		}
+    		$data['title'] = trim ($data['title']);    		
+    		$res = db::table('dp_student')
+    			->where($data)    			
+    			->order("id desc")
+    			->select();
+    		foreach($res as $key=>$vol){
+    			$xl_name = db::table('dp_education')->where('id',$vol['xl'])->value('title');
+    			if($xl_name){
+    				$res[$key]['xl_name'] = $xl_name;
+    			}else{
+    				$res[$key]['xl_name'] = '';
+    			}
+    		}
+    		
+    		foreach($res as $key=>$vol){
+    			$town_name = db::table('dp_town')->where('id',$vol['town'])->value('title');
+    			if($town_name){
+    				$res[$key]['town_name'] = $town_name;
+    			}else{
+    				$res[$key]['town_name'] = '';
+    			}
+    		}
+    		//dump($res);
+    		if($res){
+    			$con = "1";
+    			$this->assign("res",$res);
+    		}else{
+    			$con = "0";
+    		}
+    		
+    	}else{
+    		$con = "2";
+    	}
+    	
+    	$this->assign("con",$con);
+    	//学历
+    	$edu_list = db::table('dp_education')->order('sort asc')->select();
+    	$this->assign("edu_list",$edu_list);    	
+    	//乡镇
+    	$town_list = db::table('dp_town')->order('sort asc')->select();
+    	$this->assign("town_list",$town_list);
+    	
+    	return $this->fetch();
     }
+    
+    //详情页
+    public function detail()
+    {
+    	$param = $this->request->param();
+    	$info = db::table('dp_student')
+    		->alias('a')
+    		->join('dp_admin_attachment b','a.zp=b.id','left')
+    		->field('a.*,b.path')
+    		->where("a.id",$param['id'])
+    		->find();
+    	$xl_name = db::table('dp_education')->where('id',$info['xl'])->value('title');
+    	$town_name = db::table('dp_town')->where('id',$info['town'])->value('title');
+    	$info['xl_name'] = $xl_name;
+    	$info['town_name'] = $town_name;
+    	$this->assign("info",$info);
+    	//dump($info);
+    	
+    	$family = db::table('dp_studentfamily')->where('student_id',$param['id'])->select();
+    	$this->assign("family",$family);
+    	
+    	return $this->fetch();
+    }    
+    
 }

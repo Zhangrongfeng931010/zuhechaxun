@@ -1,0 +1,181 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>贫困学生档案查询</title>
+<!--<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="/public/resources/hotels.css" rel="stylesheet" type="text/css">
+  
+</head>
+<style type="text/css">
+table.imagetable {
+	font-family: verdana,arial,sans-serif;
+	font-size:15px;
+	width: 95%;
+	margin: auto;
+	text-align: center;
+	color:#333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+table.imagetable th {
+	background:#b5cfd2 url('/public/resources/blue.jpg') no-repeat center;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #999999;
+}
+table.imagetable td {
+	background:#dcddc0 url('/public/resources/grey.jpg') no-repeat center;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #999999;
+}
+</style>
+<body>
+<div class="cardexplain">
+
+
+
+<!--intro-->
+<!--<ul class="round" style="border:1px solid red;">
+  <li><img src="/public/images/tu.jpg"></li>
+</ul>-->
+
+
+<ul class="round">
+<li class="title mb"><span class="none">请填写以下信息</span></li>
+<li class="nob">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<th>学生姓名</th>
+<td>  
+<form name="search" action=""  method="post">
+<input type="text" class="px" placeholder="请输入姓名" id="name" name="title" value="" required autofocus/>
+ </td>
+</tr>
+</table>
+</li>
+<li class="nob">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<th>性别</th>
+<td>   
+<!--<input type="text" class="px" placeholder="请输入电话" id="phone" name="usertel" value="" required/>-->
+<input type="radio" name="sex" value="1">男
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="sex" value="0">女
+ </td>
+</tr>
+</table>
+</li>
+
+<li class="nob">
+<table width="100%" height="35px" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<th>学历</th>
+<td>  
+	<select style="width:100%;height: 26px;" name="xl">
+		<option value="0">不限</option>
+		{volist name="edu_list" id="vol"}	
+			  <option value="{$vol['id']}" style="width:200px;border:1px solid red;">{$vol['title']}</option>
+		{/volist}
+	</select>
+ </td>
+</tr>
+</table>
+</li>
+
+<li class="nob">
+<table width="100%" height="35px" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<th>乡镇</th>
+<td>   
+<select style="width:100%;height: 26px;" name="town">
+	<option value="0">不限</option>
+	{volist name="town_list" id="vol"}	
+		  <option value="{$vol['id']}">{$vol['title']}</option>
+	{/volist}
+</select>
+ </td>
+</tr>
+</table>
+</li>
+</ul>
+
+<div class="footReturn" style="text-align:center">
+<input type="submit" style="margin:0 auto 20px auto;width:100%"  class="submit" value="查询"  />
+</form>
+</div>
+</div>
+<!--查询结果-->
+<!-- Table goes in the document BODY -->
+
+{switch name="con" }
+    {case value="0" }
+    		<table class="imagetable">
+					<tr >
+						<th>未搜索到结果</th>
+					</tr>
+				</table>
+    {/case}
+    {case value="1"}
+    		<table class="imagetable">
+					<tr>
+						<th>姓名</th>
+						<th>性别</th>
+						<th>学历</th>
+						<th>乡镇</th>
+					</tr>
+					{volist name="res" id="vol"}
+					<tr>
+						<td><a href="/index/index/detail/id/{$vol['id']}" style="color:blue;"> {$vol['title']}</a></td>
+						<td>{$vol['sex']==1 ? '男' : '女'}</td>
+						<td>{$vol['xl_name']}</td>
+						<td>{$vol['town_name']}</td>
+					</tr>
+					{/volist}				
+				</table>
+    {/case}
+    {default /}
+    
+    
+{/switch}
+
+
+
+
+</body>
+</html>
+<script src="/public/resources/jquery.min.js"></script>
+<!--<script>
+	$(function(){
+		$(".submit").click(function(){
+			var title = $("#name").val();			
+			var sex = $('input[name="sex"]:checked ').val();
+			var edu = $("select[name='edu']").val();
+			var town = $("select[name='town']").val();
+			var title2 =title.trim();
+			$.ajax({
+       async:true,
+  		   type: "POST",
+  		   url:"{:url('index/query')}",
+  		   data:{
+  			  title:title2,
+  			  sex:sex,
+  			  xl:edu,
+  			  town:town
+  		   },
+  		   success: function(msg){
+	  			 alert(msg);
+  		  	 }
+  		  });
+	  		  
+		});
+	});
+</script>-->
